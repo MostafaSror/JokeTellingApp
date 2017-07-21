@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
         mAdView.loadAd(adRequest);
-
+        MessageDelayer.processMessage(this, mIdlingResource);
+        new EndpointsAsyncTask().execute(this);
     }
 
     @VisibleForTesting
@@ -63,9 +64,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void tellJoke(View view){
-
-        MessageDelayer.processMessage(this, mIdlingResource);
-        new EndpointsAsyncTask().execute(this);
 
         Intent myIntent = new Intent(this, DisplayActivity.class);
         myIntent.putExtra(Intent.EXTRA_INTENT,Joke);
@@ -90,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements
                         // options for running against local devappserver
                         // - 10.0.2.2 is localhost's IP address in Android emulator
                         // - turn off compression when running against local devappserver
-                        .setRootUrl("http://172.16.29.17:8080/_ah/api/") //i'm not sure of the port
+                        .setRootUrl("http://10.0.2.2:8080/_ah/api/") //i'm not sure of the port
                         .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                             @Override
                             public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
